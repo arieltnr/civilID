@@ -2,8 +2,9 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
-        "dev": "vite"
+        "build": "vite build && cp -r public/build public/dist || true",
+        "dev": "vite",
+        "vercel-build": "vite build"
     },
     "devDependencies": {
         "autoprefixer": "^10.4.20",
