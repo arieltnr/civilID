@@ -58,7 +58,7 @@ class ProfileResource extends Resource
                         return $namaFileBaru;
                     }),
                 Forms\Components\FileUpload::make('banner')
-                    ->directory('images/profil')
+                    ->directory('video/profil')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
                         $namaFileBaru = date('Y-m-d') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                         $namaFileBaru = str_replace('"', '', $namaFileBaru);
