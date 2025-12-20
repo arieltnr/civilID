@@ -52,7 +52,7 @@ class ProfileResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('logo')
                     ->disk('railway')
-                    ->directory('uploads')
+                    ->directory('images/profil')
                     ->visibility('public')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
                         $namaFileBaru = date('Y-m-d') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
