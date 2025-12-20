@@ -233,7 +233,7 @@
 
             <div class="video-wrap">
                 <video autoplay="" loop="" muted="" class="custom-video" poster="">
-                    <source src="{{ asset('/storage/'.$modProfile->banner) }}" type="video/mp4">
+                    <source src="{{ asset('/storage/'.(optional($modProfile)->banner ?? 'default-banner.mp4')) }}" type="video/mp4">
 
                     Your browser does not support the video tag.
                 </video>
