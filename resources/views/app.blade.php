@@ -741,7 +741,7 @@
 
                 <div class="col-lg-7 col-12">
                     <ul class="footer-menu d-flex flex-wrap">
-                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">{{ $modProfile->motto }}</a></li>
+                        <li class="footer-menu-item"><a href="#" class="footer-menu-link">{{ $modProfile->motto ?? null }}</a></li>
                     </ul>
                 </div>
 
