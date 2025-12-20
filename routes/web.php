@@ -9,7 +9,3 @@ Route::get('/', function () {
         'modRiset' => \App\Models\Riset::all(),
     ]);
 });
-
-Route::get('/filament/assets/{file}', function ($file) {
-    return response()->file(public_path("filament/assets/{$file}"));
-})->where('file', '.*')->middleware('web');
