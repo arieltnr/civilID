@@ -9,7 +9,10 @@
         "php": "^8.3",
         "filament/filament": "^3.2",
         "laravel/framework": "^11.31",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "ext-intl": "*",
+        "ext-zip": "*",
+        "openspout/openspout": "^4.32"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -60,6 +63,11 @@
         }
     },
     "config": {
+        "platform": {
+            "php": "8.3",
+            "ext-intl": "8.3",
+            "ext-zip": "8.3"
+        },
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
