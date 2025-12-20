@@ -59,13 +59,7 @@ return [
             'throw' => false,
             'report' => false,
         ],
-        
-        'railway' => [
-            'driver' => 'local',
-            'root' => '/data',
-            'url' => env('APP_URL') . '/storage',
-            'visibility' => 'public',
-        ],
+
     ],
 
     /*

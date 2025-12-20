@@ -51,9 +51,7 @@ class ProfileResource extends Resource
                 Forms\Components\Textarea::make('motto')
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('logo')
-                    ->disk('railway')
                     ->directory('images/profil')
-                    ->visibility('public')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) {
                         $namaFileBaru = date('Y-m-d') . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                         $namaFileBaru = str_replace('"', '', $namaFileBaru);
