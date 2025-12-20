@@ -32,7 +32,7 @@ WORKDIR /app
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
-
+RUN php artisan filament:assets
 # Jangan generate key di sini — atur via Railway env vars
 # RUN php artisan key:generate
 
