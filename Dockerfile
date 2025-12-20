@@ -36,4 +36,4 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interactio
 # Jangan generate key di sini — atur via Railway env vars
 # RUN php artisan key:generate
 
-CMD ["sh", "-c", "php artisan filament:assets --ansi && php artisan serve --host=0.0.0.0 --port=8080"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
