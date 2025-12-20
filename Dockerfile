@@ -1,4 +1,4 @@
-FROM php:8.2-cli
+FROM php:8.3-cli
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -16,14 +16,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy files
+# Copy aplikasi
 COPY . .
 
-# Install dependencies (dengan optimize)
+# Install dependencies
 RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
 
-# Generate Laravel keys (opsional, bisa juga via Railway env var)
+# Generate application key (opsional, lebih baik diatur via Railway env)
 RUN php artisan key:generate
 
-# Start app (gunakan server built-in Laravel untuk demo; di production lebih baik pakai Nginx/FPM)
+# Jalankan aplikasi
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
