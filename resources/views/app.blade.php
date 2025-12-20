@@ -747,7 +747,7 @@
 
                 <div class="col-lg-5 col-12 ms-lg-auto">
                     <div class="copyright-text-wrap d-flex align-items-center">
-                        <p class="copyright-text ms-lg-auto me-4 mb-0">Copyright © {{ $modProfile->tahun ?? null . ' '. $modProfile->nama_profil ?? null }}.
+                        <p class="copyright-text ms-lg-auto me-4 mb-0">Copyright © {{ $modProfile->tahun ?? null }} {{ $modProfile->nama_profil ?? null }}.
 
                             <br>All Rights Reserved.
 
