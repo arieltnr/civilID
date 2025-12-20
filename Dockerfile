@@ -16,14 +16,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /app
 
-# Copy aplikasi
+# Copy semua file proyek
 COPY . .
 
 # Install dependencies
 RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
 
-# Generate application key (opsional, lebih baik diatur via Railway env)
-RUN php artisan key:generate
+# ❌ HAPUS BARIS INI:
+# RUN php artisan key:generate
 
-# Jalankan aplikasi
+# Jalankan aplikasi (Railway akan menyediakan APP_KEY via env vars)
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
