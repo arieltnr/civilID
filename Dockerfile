@@ -15,38 +15,25 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     unzip \
+    # MySQL client (opsional tapi disarankan)
     default-mysql-client \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
     && docker-php-ext-install \
         intl \
         zip \
         pdo_mysql \
-        gd \
-        opcache \
-        bcmath \
-        sockets
+        # opsional: gd, opcache, dll jika dibutuhkan
+        gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copy composer files first untuk caching layer
-COPY composer.json composer.lock ./
-
-# Install dependencies (tanpa dev)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copy seluruh aplikasi
 COPY . .
 
-# Generate asset filament
-RUN php artisan filament:assets --ansi
+RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
 
-# Set permissions untuk storage dan bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
+# Jangan generate key di sini — atur via Railway env vars
+# RUN php artisan key:generate
 
-# Expose port 8080 (sesuai Railway)
-EXPOSE 8080
-
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD ["sh", "-c", "php artisan filament:assets --ansi && php artisan serve --host=0.0.0.0 --port=8080"]
