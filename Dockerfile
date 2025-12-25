@@ -31,7 +31,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
+RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction --ignore-platform-req=ext-ftp
 
 # Jangan generate key di sini — atur via Railway env vars
 # RUN php artisan key:generate
