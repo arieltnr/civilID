@@ -232,11 +232,24 @@
             </div>
 
             <div class="video-wrap">
-                <video autoplay="" loop="" muted="" class="custom-video" poster="">
-                <source src="{{ Storage::url($modProfile->banner ?? 'default-banner.mp4') }}" type="video/mp4">
+                @php
+                    $bannerPath = $modProfile->banner ?? 'default-banner.mp4';
+                    $bannerUrl = Storage::url($bannerPath);
+                    $extension = strtolower(pathinfo($bannerPath, PATHINFO_EXTENSION));
+                    $isVideo = in_array($extension, ['mp4', 'webm', 'ogg']);
+                    $isImage = in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                @endphp
 
+                @if($isVideo)
+                <video autoplay="" loop="" muted="" class="custom-video" poster="">
+                    <source src="{{ $bannerUrl }}" type="video/{{ $extension }}">
                     Your browser does not support the video tag.
                 </video>
+                @elseif($isImage)
+                <img src="{{ $bannerUrl }}" alt="Banner" class="custom-video">
+                @else
+                <img src="{{ Storage::url('default-banner.jpg') }}" alt="Default Banner" class="custom-video">
+                @endif
             </div>
         </section>
 
@@ -626,7 +639,7 @@
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="modalLabel{{ $kegiatan->id }}">Dokumentasi - {{ $kegiatan->nama_kegiatan }}</h5>
+                                    <h5 style="color: currentcolor;" class="modal-title" id="modalLabel{{ $kegiatan->id }}">Dokumentasi - {{ $kegiatan->nama_kegiatan }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -721,9 +734,9 @@
                 <div class="col-lg-12 col-12 border-bottom pb-5 mb-5">
                     <div class="d-flex">
                         <a href="index.html" class="navbar-brand mx-auto mx-lg-0 d-flex align-items-center">
-                        <img src="{{ Storage::url($modProfile->logo ?? 'default/logo.png') }}"
-                            class="logo-navbar me-3"
-                            alt="Logo">
+                            <img src="{{ Storage::url($modProfile->logo ?? 'default/logo.png') }}"
+                                class="logo-navbar me-3"
+                                alt="Logo">
                             <span class="brand-text fs-6 fw-bold">{{ $modProfile->nama_profil ?? null }}</span>
                         </a>
 
