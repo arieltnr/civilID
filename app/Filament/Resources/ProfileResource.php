@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProfileResource\Pages;
-use App\Filament\Resources\ProfileResource\RelationManagers;
+Use Illuminate\Support\Facades\Storage;
 use App\Models\Profile;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class ProfileResource extends Resource
@@ -80,9 +78,9 @@ class ProfileResource extends Resource
                 Tables\Columns\TextColumn::make('no_kontak_profil')
                     ->label('No Kontak'),
                 Tables\Columns\ImageColumn::make('logo')
-                    ->disk('public')
-                    ->url(fn($record) => asset('storage/' . $record->logo))->openUrlInNewTab()
-                    ->label('logo'),
+                    ->label('logo')
+                    ->url(fn($record): ?string => $record->logo ? Storage::url($record->logo) : null)
+                    ->openUrlInNewTab(),
             ])
             ->filters([
                 //

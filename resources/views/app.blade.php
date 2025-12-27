@@ -172,7 +172,6 @@
             </button>
 
             <a href="index.html" class="navbar-brand mx-auto mx-lg-0 d-flex align-items-center">
-                <!-- <img src="{{ asset('/storage/'.($modProfile->logo ?? 'default/logo.png')) }}" class="logo-navbar me-3" alt="Logo"> -->
                 <img src="{{ Storage::url($modProfile->logo ?? 'default/logo.png') }}" class="logo-navbar me-3" alt="Logo">
                 <span class="brand-text fs-6 fw-bold">{{ $modProfile->nama_profil ?? null }}</span>
             </a>
@@ -234,7 +233,7 @@
 
             <div class="video-wrap">
                 <video autoplay="" loop="" muted="" class="custom-video" poster="">
-                    <source src="{{ asset('/storage/'.(optional($modProfile)->banner ?? 'default-banner.mp4')) }}" type="video/mp4">
+                    <source src="{{ Storage::url(optional($modProfile)->banner ?? 'default-banner.mp4')) }}" type="video/mp4">
 
                     Your browser does not support the video tag.
                 </video>
@@ -247,7 +246,7 @@
                     @forelse ($modKegiatan as $kegiatan)
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="highlight-thumb">
-                            <img src="{{ asset('/storage/'.$kegiatan->gambar1) }}"
+                            <img src="{{ Storage::url($kegiatan->gambar1 ?? 'default/logo.png') }}"
                                 class="highlight-image img-fluid"
                                 alt=""
                                 style="cursor: pointer;"
@@ -268,7 +267,7 @@
                                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-center p-0">
-                                    <img src="{{ asset('/storage/'.$kegiatan->gambar1) }}"
+                                    <img src="{{ Storage::url($kegiatan->gambar1 ?? 'default/logo.png') }}"
                                         class="img-fluid rounded"
                                         alt="{{ $kegiatan->nama_kegiatan ?? 'Kegiatan' }}"
                                         style="max-height: 85vh; width: auto;">
@@ -498,44 +497,44 @@
                                             <!-- Slides -->
                                             <div class="carousel-inner">
                                                 <div class="carousel-item active">
-                                                    <img src="{{ asset('/storage/'.$riset->gambar1) }}"
+                                                    <img src="{{ Storage::url($riset->gambar1 ?? 'default/logo.png') }}"
                                                         class="d-block w-100 schedule-image img-fluid clickable-image"
                                                         alt="Gambar 1"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"
-                                                        data-image-src="{{ asset('/storage/'.$riset->gambar1) }}">
+                                                        data-image-src="{{ Storage::url($riset->gambar1 ?? 'default/logo.png') }}">
                                                 </div>
 
                                                 @if (!empty($riset->gambar2))
                                                 <div class="carousel-item">
-                                                    <img src="{{ asset('/storage/'.$riset->gambar2) }}"
+                                                    <img src="{{ Storage::url($riset->gambar2 ?? 'default/logo.png') }}"
                                                         class="d-block w-100 schedule-image img-fluid clickable-image"
                                                         alt="Gambar 2"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"
-                                                        data-image-src="{{ asset('/storage/'.$riset->gambar2) }}">
+                                                        data-image-src="{{ Storage::url($riset->gambar2 ?? 'default/logo.png') }}">
                                                 </div>
                                                 @endif
 
                                                 @if (!empty($riset->gambar3))
                                                 <div class="carousel-item">
-                                                    <img src="{{ asset('/storage/'.$riset->gambar3) }}"
+                                                    <img src="{{ Storage::url($riset->gambar3 ?? 'default/logo.png') }}"
                                                         class="d-block w-100 schedule-image img-fluid clickable-image"
                                                         alt="Gambar 3"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"
-                                                        data-image-src="{{ asset('/storage/'.$riset->gambar3) }}">
+                                                        data-image-src="{{ Storage::url($riset->gambar3 ?? 'default/logo.png') }}">
                                                 </div>
                                                 @endif
 
                                                 @if (!empty($riset->gambar4))
                                                 <div class="carousel-item">
-                                                    <img src="{{ asset('/storage/'.$riset->gambar4) }}"
+                                                    <img src="{{ Storage::url($riset->gambar4 ?? 'default/logo.png') }}"
                                                         class="d-block w-100 schedule-image img-fluid clickable-image"
                                                         alt="Gambar 4"
                                                         data-bs-toggle="modal"
                                                         data-bs-target="#imageModal"
-                                                        data-image-src="{{ asset('/storage/'.$riset->gambar4) }}">
+                                                        data-image-src="{{ Storage::url($riset->gambar4 ?? 'default/logo.png') }}">
                                                 </div>
                                                 @endif
                                             </div>
@@ -635,19 +634,19 @@
                                         <div class="carousel-inner">
                                             @if($kegiatan->gambar1)
                                             <div class="carousel-item active">
-                                                <img src="{{ asset('/storage/'.$kegiatan->gambar1) }}" class="d-block w-100" alt="Dokumentasi 1">
+                                                <img src="{{ Storage::url($kegiatan->gambar1 ?? 'default/logo.png') }}" class="d-block w-100" alt="Dokumentasi 1">
                                             </div>
                                             @endif
 
                                             @if($kegiatan->gambar2)
                                             <div class="carousel-item {{ !$kegiatan->gambar1 ? 'active' : '' }}">
-                                                <img src="{{ asset('/storage/'.$kegiatan->gambar2) }}" class="d-block w-100" alt="Dokumentasi 2">
+                                                <img src="{{ Storage::url($kegiatan->gambar2 ?? 'default/logo.png') }}" class="d-block w-100" alt="Dokumentasi 2">
                                             </div>
                                             @endif
 
                                             @if($kegiatan->gambar3)
                                             <div class="carousel-item {{ !$kegiatan->gambar1 && !$kegiatan->gambar2 ? 'active' : '' }}">
-                                                <img src="{{ asset('/storage/'.$kegiatan->gambar3) }}" class="d-block w-100" alt="Dokumentasi 3">
+                                                <img src="{{ Storage::url($kegiatan->gambar3 ?? 'default/logo.png') }}" class="d-block w-100" alt="Dokumentasi 3">
                                             </div>
                                             @endif
                                         </div>
