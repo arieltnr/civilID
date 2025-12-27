@@ -172,7 +172,8 @@
             </button>
 
             <a href="index.html" class="navbar-brand mx-auto mx-lg-0 d-flex align-items-center">
-                <img src="{{ asset('/storage/'.($modProfile->logo ?? 'default/logo.png')) }}" class="logo-navbar me-3" alt="Logo">
+                <!-- <img src="{{ asset('/storage/'.($modProfile->logo ?? 'default/logo.png')) }}" class="logo-navbar me-3" alt="Logo"> -->
+                <img src="{{ Storage::url($modProfile->logo ?? 'default/logo.png') }}" class="logo-navbar me-3" alt="Logo">
                 <span class="brand-text fs-6 fw-bold">{{ $modProfile->nama_profil ?? null }}</span>
             </a>
 
