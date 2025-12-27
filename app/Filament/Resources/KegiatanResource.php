@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KegiatanResource\Pages;
-use App\Filament\Resources\KegiatanResource\RelationManagers;
+Use Illuminate\Support\Facades\Storage;
 use App\Models\Kegiatan;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Carbon\Carbon;
 
@@ -78,9 +76,9 @@ class KegiatanResource extends Resource
                     ->label('Tgl Kegiatan')
                     ->formatStateUsing(fn($state) => Carbon::parse($state)->translatedFormat('d F Y H:i')),
                 Tables\Columns\ImageColumn::make('gambar1')
-                    ->disk('public')
-                    ->url(fn($record) => asset('storage/' . $record->gambar1))->openUrlInNewTab()
-                    ->label('gambar1'),
+                    ->label('gambar1')
+                    ->url(fn($record): ?string => $record->gambar1 ? Storage::url($record->gambar1) : null)
+                    ->openUrlInNewTab(),
             ])
             ->filters([
                 //

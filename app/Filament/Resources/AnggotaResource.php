@@ -3,15 +3,13 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AnggotaResource\Pages;
-use App\Filament\Resources\AnggotaResource\RelationManagers;
+Use Illuminate\Support\Facades\Storage;
 use App\Models\Anggota;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class AnggotaResource extends Resource
@@ -62,9 +60,9 @@ class AnggotaResource extends Resource
                 Tables\Columns\TextColumn::make('jabatan')
                     ->label('Kontak'),
                 Tables\Columns\ImageColumn::make('foto')
-                    ->disk('public')
-                    ->url(fn($record) => asset('storage/' . $record->foto))->openUrlInNewTab()
-                    ->label('foto'),
+                    ->label('foto')
+                    ->url(fn($record): ?string => $record->foto ? Storage::url($record->foto) : null)
+                    ->openUrlInNewTab(),
                 Tables\Columns\IconColumn::make('status')->boolean(),
             ])
             ->filters([
