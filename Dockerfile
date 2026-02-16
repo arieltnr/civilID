@@ -12,28 +12,56 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libwebp-dev \
     libxpm-dev \
+    libssh2-1-dev \
     git \
     curl \
     unzip \
-    # MySQL client (opsional tapi disarankan)
     default-mysql-client \
+    && docker-php-ext-configure gd \
+        --with-freetype \
+        --with-jpeg \
+        --with-webp \
     && docker-php-ext-install \
         intl \
         zip \
         pdo_mysql \
-        # opsional: gd, opcache, dll jika dibutuhkan
-        gd
+        gd \
+        opcache \
+        pcntl \
+        bcmath \
+    && pecl install ssh2 \
+    && docker-php-ext-enable ssh2 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
+# Copy composer files first (untuk Docker layer caching)
+COPY composer.json composer.lock ./
+
+# Install dependencies
+RUN composer install \
+    --optimize-autoloader \
+    --no-dev \
+    --no-interaction \
+    --prefer-dist
+
+# Copy seluruh aplikasi
 COPY . .
 
-RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction --ignore-platform-req=ext-ftp
+# Set permissions
+RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
+    && chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Jangan generate key di sini — atur via Railway env vars
-# RUN php artisan key:generate
+# Optimize Laravel
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+# Expose port
+EXPOSE 8080
+
+# Start server
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
