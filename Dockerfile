@@ -21,7 +21,7 @@ WORKDIR /app
 # Copy application files
 COPY . .
 
-# Install dependencies (no scripts to avoid build-time DB access)
+# Install dependencies
 RUN composer install \
     --optimize-autoloader \
     --no-dev \
@@ -29,13 +29,8 @@ RUN composer install \
     --no-scripts \
     --ignore-platform-reqs
 
-# Manual package discovery (safe without DB)
+# Manual package discovery
 RUN php artisan package:discover --ansi || true
-
-# Cache what we can (config needs .env so might fail - that's ok)
-RUN php artisan config:cache || true
-RUN php artisan route:cache || true
-RUN php artisan view:cache || true
 
 # Set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache \
@@ -43,5 +38,11 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
 
 EXPOSE 8080
 
-# Start command: migrate first, then serve
-CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
+# PENTING: Clear cache dulu, baru migrate & serve
+CMD php artisan config:clear && \
+    php artisan cache:clear && \
+    php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
+    php artisan serve --host=0.0.0.0 --port=8080
