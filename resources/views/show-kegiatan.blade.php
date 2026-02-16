@@ -184,20 +184,6 @@ https://templatemo.com/tm-574-mexant
           <div class="left-image">
             <!-- <img src="{{ Storage::url($kegiatan->gambar1 ?? 'default/logo.png') }}" alt=""> -->
             @php
-            // Helper function untuk mendapatkan URL gambar dengan fallback
-            function getImageUrl($path) {
-              if (empty($path)) {
-                return asset('storage/default/no-image.jpg');
-              }
-
-              // Cek apakah file ada
-              if (file_exists(storage_path('app/public/' . $path))) {
-                return asset('storage/' . $path);
-              }
-
-              return asset('storage/default/no-image.jpg');
-            }
-
             // Kumpulkan semua gambar yang ada
             $images = [];
             if (!empty($kegiatan->gambar1)) $images[] = $kegiatan->gambar1;
@@ -233,7 +219,7 @@ https://templatemo.com/tm-574-mexant
                       <div class="carousel-inner">
                         @foreach($images as $index => $image)
                         <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                          <img src="{{ getImageUrl($image) }}"
+                          <img src="{{ Storage::url($image ?? 'default/no-image.jpg') }}"
                             class="d-block w-100 image"
                             alt="Dokumentasi {{ $index + 1 }}"
                             style="max-height: 80vh; object-fit: contain;">
@@ -286,7 +272,7 @@ https://templatemo.com/tm-574-mexant
                   <div class="carousel-inner">
                     @foreach($images as $index => $image)
                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                      <img src="{{ getImageUrl($image) }}"
+                      <img src="{{ Storage::url($image ?? 'default/no-image.jpg') }}"
                         class="d-block w-100 cursor-zoom image"
                         alt="Dokumentasi {{ $index + 1 }}"
                         style="height: 400px; object-fit: cover;"
@@ -326,7 +312,7 @@ https://templatemo.com/tm-574-mexant
                 <div class="d-flex flex-wrap justify-content-center gap-2">
                   @foreach($images as $index => $image)
                   <div class="thumbnail-container" style="width: 120px; height: 80px;">
-                    <img src="{{ getImageUrl($image) }}"
+                    <img src="{{ Storage::url($image ?? 'default/no-image.jpg') }}"
                       class="img-thumbnail w-100 h-100 cursor-pointer image"
                       alt="Thumb {{ $index + 1 }}"
                       style="object-fit: cover;"
