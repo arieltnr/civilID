@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libwebp-dev \
     libxpm-dev \
     libssh2-1-dev \
+    libssl-dev \
     git \
     curl \
     unzip \
@@ -29,6 +30,7 @@ RUN apt-get update && apt-get install -y \
         opcache \
         pcntl \
         bcmath \
+        ftp \
     && pecl install ssh2 \
     && docker-php-ext-enable ssh2 \
     && rm -rf /var/lib/apt/lists/*
