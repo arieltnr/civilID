@@ -18,11 +18,14 @@ RUN apt-get update && apt-get install -y \
     curl \
     unzip \
     default-mysql-client \
-    && docker-php-ext-configure gd \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure and install PHP extensions
+RUN docker-php-ext-configure gd \
         --with-freetype \
         --with-jpeg \
         --with-webp \
-    && docker-php-ext-install \
+    && docker-php-ext-install -j$(nproc) \
         intl \
         zip \
         pdo_mysql \
@@ -30,40 +33,45 @@ RUN apt-get update && apt-get install -y \
         opcache \
         pcntl \
         bcmath \
-        ftp \
-    && pecl install ssh2 \
-    && docker-php-ext-enable ssh2 \
-    && rm -rf /var/lib/apt/lists/*
+        ftp
+
+# Install SSH2 via PECL dan enable langsung
+RUN pecl install ssh2-1.4.1 \
+    && docker-php-ext-enable ssh2
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Verify PHP extensions loaded
+RUN php -m
+
 WORKDIR /app
 
-# Copy composer files first (untuk Docker layer caching)
+# Copy composer files first
 COPY composer.json composer.lock ./
 
-# Install dependencies
+# Install dependencies dengan verbose untuk debugging
 RUN composer install \
     --optimize-autoloader \
     --no-dev \
     --no-interaction \
-    --prefer-dist
+    --prefer-dist \
+    -vvv || (composer diagnose && exit 1)
 
-# Copy seluruh aplikasi
+# Copy application
 COPY . .
 
 # Set permissions
-RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
-    && chmod -R 775 /app/storage /app/bootstrap/cache
+RUN mkdir -p storage/framework/{sessions,views,cache} \
+    && mkdir -p storage/logs \
+    && mkdir -p bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Optimize Laravel
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+# Cache config (skip jika ada error - karena butuh .env)
+RUN php artisan config:cache || true \
+    && php artisan route:cache || true \
+    && php artisan view:cache || true
 
-# Expose port
 EXPOSE 8080
 
-# Start server
 CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=8080
