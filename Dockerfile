@@ -6,12 +6,27 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libfreetype6-dev \
     libjpeg62-turbo-dev \
+    libicu-dev \
+    zlib1g-dev \
     git \
     curl \
     unzip \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install zip pdo_mysql gd ftp \
     && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions - intl HARUS ada untuk Filament
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
+        intl \
+        zip \
+        pdo_mysql \
+        gd \
+        ftp \
+        opcache \
+        bcmath
+
+# Verify intl is installed
+RUN php -r "if (!extension_loaded('intl')) { echo 'ERROR: intl extension not loaded!'; exit(1); } else { echo 'intl extension OK'; }"
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
@@ -33,5 +48,11 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
 
 EXPOSE 8080
 
-CMD php artisan migrate --force --seed && \
+# Show loaded extensions di log untuk debugging
+CMD echo "=== PHP Extensions ===" && \
+    php -m && \
+    echo "=== Intl Check ===" && \
+    php -r "echo extension_loaded('intl') ? 'intl: LOADED' : 'intl: NOT LOADED'; echo PHP_EOL;" && \
+    echo "=== Starting Application ===" && \
+    php artisan migrate --force --seed && \
     php artisan serve --host=0.0.0.0 --port=8080
