@@ -33,5 +33,5 @@ RUN mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cac
 
 EXPOSE 8080
 
-CMD php artisan migrate --force && \
+CMD php artisan migrate --force --seed && \
     php artisan serve --host=0.0.0.0 --port=8080
